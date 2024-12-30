@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capteurs et Actionneurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Barre de navigation */
+        .navbar {
+            background-color: #03b647;
+            padding: 5px 15px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar a.active-page {
+            background-color: #91e5a3;
+            font-weight: bold;
+        }
+
+        /*Baniere eco */
+        .banner-eco {
+            background-color: #dff0d8; /* Vert pâle */
+            color: #2e7d32; /* Vert foncé */
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 3px solid #4caf50; /* Ligne verte */
+        }
+        .banner-eco h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .banner-eco p {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        
+         /* Titre 1 */
+         h1 {
+            text-align: center;
+            margin: 30px auto; 
+            color: #2e7d32; 
+            font-weight: bold; 
+            font-size: 2.5rem; 
+            font-family: 'Arial', sans-serif; 
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+            border-bottom: 3px solid #81c784;
+            padding-bottom: 10px; 
+            width: fit-content; 
+        }
+
+        /*Titre 2 */
+        h2 {
+            margin: 12px 0;
+            color: #47483f;
+        }
+        
+        /*Section des pièces*/
+        .room-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px auto;
+        }
+        
+        /*Carte des pieces*/
+        .room-card {
+            position: relative;
+            width: 300px;
+            margin: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .room-card img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .room-card .room-title {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .sensor-list {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sensor-list p {
+            margin: 0;
+            padding: 4px 0;
+        }
+        
+        .sensor-list strong {
+            color: #2e7d32;
+        }
+        
+        /* Style pour les badges des états */
+        .sensor-list .badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 12px;
+            color: white;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        /* Badge vert pour les capteurs actifs */
+        .badge-active {
+            background-color: #28a745; 
+        }
+        
+        /* Badge rouge pour les capteurs inactifs */
+        .badge-inactive {
+            background-color: #dc3545; 
+        }
+        
+        .footer {
+            background-color: #f8f9fa; /* Couleur de fond douce */
+            color: #6c757d; /* Texte gris */
+            font-size: 0.9rem; /* Taille du texte */
+            border-top: 1px solid #e9ecef; /* Ligne séparatrice discrète */
+            position: relative; /* Par défaut, ajustable */
+            bottom: 0;
+            width: 100%;
+        }
+    </style>    
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar">
+        <a href="/" class="">Accueil</a>
+        <a href="/capteurs" class="active-page">Capteurs</a>
+        <a href="/configuration" class="">Configuration</a>
+        <a href="/consommation" class="">Consommations</a>
+        <a href="/economies" class="">Économies</a>
+    </nav> 
+
+    <!-- Bannière -->
+    <div class="banner-eco text-center">
+        <h2><i class="fas fa-leaf"></i> Logement Éco-Responsable</h2>
+        <p>Visualisez et gérez vos capteurs pour un logement éco-responsable 🌿</p>
+    </div>
+
+    <h1>Capteurs et Actionneurs</h1>
+
+    <!-- Section capteurs -->
+    <div id="room-section" class="room-section">
+        <!-- Les pièces seront injectées ici dynamiquement -->
+    </div>
+
+    <script>
+        // Fonction pour revenir à la page précédente
+        function goBack() {
+            window.history.back(); // Revenir à la page précédente
+        }
+
+        // Fonction pour charger les données des capteurs
+        async function loadSensorData() {
+            try {
+                const logementId = 1; // Changez selon le logement voulu
+                const response = await fetch(`/capteurs/data?logement_id=${logementId}`);
+                const data = await response.json();
+
+                const roomSection = document.getElementById('room-section');
+                roomSection.innerHTML = ''; 
+
+                for (const roomName in data) {
+                    const roomData = data[roomName];
+                    const roomCard = document.createElement('div');
+                    roomCard.className = 'room-card';
+
+                    roomCard.innerHTML = `
+                        <div class="room-title">${roomName}</div>
+                        <img src="/static/images/${roomName.toLowerCase()}1.png" alt="${roomName}" onerror="this.src='/static/images/default.png'">
+                        <div class="sensor-list">
+                            ${
+                                roomData.length > 0
+                                    ? roomData.map(sensor => `
+                                        <p>
+                                            <strong>${sensor.name}</strong> : 
+                                            ${sensor.last_measurement} ${sensor.unit} <br>
+                                            <strong>Port :</strong> ${sensor.port} <br>
+                                            <span class="badge ${sensor.status === 'Actif' ? 'badge-active' : 'badge-inactive'}">${sensor.status}</span><br>
+                                            <em>${sensor.date || 'Date inconnue'}</em>
+                                        </p>
+                                      `).join('')
+                                    : `<p>Aucun capteur disponible.</p>` 
+                            }
+                        </div>
+                    `;
+
+                    roomSection.appendChild(roomCard);
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des données des capteurs :', error);
+                alert('Impossible de charger les données des capteurs.');
+            }
+        }
+
+        loadSensorData();
+    </script>
+     <div class="footer">
+        © 2024 Capteurs / Actionneurs Logement ARI Éco-Responsable - Tous droits réservés BAK
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Économie - Gestion des Factures</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Barre de navigation */
+        .navbar {
+            background-color: #03b647;
+            padding: 5px 15px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .navbar a.active-page {
+            background-color: #91e5a3;
+            font-weight: bold;
+        }
+
+        /*Baniere eco */
+        .banner-eco {
+            background-color: #dff0d8; /* Vert pâle */
+            color: #2e7d32; /* Vert foncé */
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 3px solid #4caf50; /* Ligne verte */
+        }
+        .banner-eco h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .banner-eco p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Bouton eco friendly*/
+        .btn-custom-green {
+            background-color: #03b647; /* Vert eco-friendly */
+            color: rgb(9, 0, 0) !important;
+            border-radius: 50px; /* Boutons arrondis */
+            padding: 0.5rem 1.5rem;
+            font-weight: bold;
+        }
+
+         /* Titre 1 */
+         h1 {
+            text-align: center;
+            margin: 30px auto; 
+            color: #2e7d32; 
+            font-weight: bold; 
+            font-size: 2.5rem; 
+            font-family: 'Arial', sans-serif; 
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+            border-bottom: 3px solid #81c784;
+            padding-bottom: 10px; 
+            width: fit-content; 
+        }
+
+        /*Titre 2 */
+        h2 {
+            margin: 12px 0;
+            color: #47483f;
+        }
+
+        /*Tableau factures*/
+        table {
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /*Bouton supprimer */
+        .btn-custom-red {
+            background-color: #de1313 !important;
+            color: white !important;
+            border: none;
+        }
+        /*Canvas graphiques */
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        .row .col-md-4 {
+            text-align: center; /* Centrer les graphiques */
+            padding: 1rem; /* Ajoute un peu d'espace entre les colonnes */
+        }
+
+        .container.mt-4.mb-5 {
+        margin-bottom: 2rem; /* Ajoute de l'espace sous les graphiques */
+         }
+
+        .canvas-container {
+            background-image: url('https://example.com/background-leaf.svg'); /* Remplacez par une URL d'image de feuille */
+            background-size: cover;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .footer {
+            background-color: #f8f9fa; 
+            color: #6c757d; 
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef; 
+            position: relative; 
+            bottom: 0;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar">
+        <a href="/" class="">Accueil</a>
+        <a href="/capteurs" class="">Capteurs</a>
+        <a href="/configuration" class="">Configuration</a>
+        <a href="/consommation" class="">Consommations</a>
+        <a href="/economies" class="active-page">Économies</a>
+    </nav>    
+
+    <!-- Bannière Eco responsable -->
+    <div class="banner-eco">
+        <h2><i class="fas fa-leaf"></i> Logement Éco-Responsable</h2>
+        <p>Optimisez vos consommations pour un avenir durable 🌱</p>
+    </div>
+    
+    <!-- Contenu Principal -->
+    <div class="container">
+        <h1> Gestion des Factures</h1>
+        <!-- KPIs  -->
+        <div class="container mt-4">
+            <h2 class="section-title"><i class="fas fa-seedling"></i> Indicateurs Clés</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-success">Dépenses totales ce mois : <strong id="total-month">0 €</strong></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-primary">Économies réalisées : <strong id="savings">0 €</strong></div>
+                </div>
+            </div>
+        </div>        
+        
+        <!-- Graphiques  -->
+        <div class="container mt-4 mb-5">
+            <h2 class="section-title mt-5"> <i class="fas fa-chart-pie"></i> Graphiques </h2>
+            <div class="row">
+                <!-- Graphique en Camembert -->
+                <div class="col-md-4">
+                    <canvas id="chart-economies" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Graphique Linéaire -->
+                <div class="col-md-4">
+                    <canvas id="chart-evolution" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Graphique barres -->
+                <div class="col-md-4">
+                    <canvas id="chart-comparatif" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+  
+        <h2> <i class="fas fa-file-invoice"></i> Détails sur les Factures </h2>
+        
+            <!-- Bouton pour Ajouter une Facture -->
+        <button class="btn btn-custom-green mb-3" data-bs-toggle="modal" data-bs-target="#addInvoiceModal">Ajouter une Facture</button>
+
+        <!-- Tableau des Factures -->
+        <table class="table table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th>Date</th>
+                    <th>Montant (€)</th>
+                    <th>Type</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-table">
+                <!-- Contenu dynamique via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal Ajouter une Facture -->
+    <div class="modal fade" id="addInvoiceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter une Facture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-invoice-form">
+                        <input id="invoice-logement" type="hidden" value="1">
+                        <input id="invoice-date" type="date" class="form-control mb-2" required>
+                        <input id="invoice-amount" type="number" class="form-control mb-2" placeholder="Montant (€)" required>
+                        <input id="invoice-type" class="form-control mb-2" placeholder="Type (Eau, Gaz, etc.)" required>
+                        <input id="invoice-consumption" type="number" class="form-control mb-2" placeholder="Valeur Consommation (kWh, m³, etc.)">
+                        <select id="invoice-status" class="form-select mb-2">
+                            <option value="En attente">En attente</option>
+                            <option value="Payée">Payée</option>
+                        </select>
+                        <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                    </form>                                       
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        // KPI Indicateur clé
+        async function loadKPIs() {
+            try {
+                const response = await fetch('/factures/comparatif');
+                const data = await response.json();
+
+                const currentMonth = data.reduce((sum, item) => sum + item.current_month, 0);
+                const previousMonth = data.reduce((sum, item) => sum + item.previous_month, 0);
+
+                document.getElementById('total-month').innerText = `${currentMonth.toFixed(2)} €`;
+                document.getElementById('savings').innerText = `${(previousMonth - currentMonth).toFixed(2)} €`;
+            } catch (err) {
+                console.error("Erreur chargement KPIs :", err);
+                alert("Erreur lors du chargement des indicateurs clés.");
+            }
+        }
+
+
+        //graphique camembert repartition des montants par type
+        async function loadEconomiesChart() {
+            try {
+                // Récupération des données agrégées depuis le backend
+                const response = await fetch('/factures/statistiques');
+                if (!response.ok) throw new Error("Erreur lors du chargement des données pour le graphique");
+
+                const stats = await response.json();
+
+                // Préparation des données pour Chart.js
+                const labels = stats.map(item => item.type_facture);
+                const data = stats.map(item => item.total);
+
+                const ctx = document.getElementById('chart-economies').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels, // Types de factures (e.g., "Électricité", "Eau")
+                        datasets: [{
+                            label: 'Montants (€)',
+                            data: data, // Totaux des montants
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Répartition des Montants par Type de Facture'
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Erreur lors du chargement des données pour le graphique :", err);
+                alert("Impossible de charger les données pour le graphique.");
+            }
+        }
+
+        //Graphique chart Evolution des montants par mois
+        async function loadEvolutionChart() {
+            try {
+                // Récupération des données pour l'évolution des montants
+                const response = await fetch('/factures');
+                if (!response.ok) throw new Error("Erreur lors du chargement des données pour le graphique linéaire");
+
+                const factures = await response.json();
+                
+                // Transformation des données pour obtenir les montants mensuels
+                const monthlyData = {};
+                factures.forEach(facture => {
+                    const [year, month] = facture.date_facture.split('-'); // Extraire année et mois
+                    const key = `${year}-${month}`; // Clé : Année-Mois
+                    monthlyData[key] = (monthlyData[key] || 0) + facture.montant;
+                });
+
+                const labels = Object.keys(monthlyData).sort(); // Tri par ordre chronologique
+                const data = labels.map(label => monthlyData[label]);
+
+                // Générer le graphique linéaire
+                const ctx = document.getElementById('chart-evolution').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels, // Mois
+                        datasets: [{
+                            label: 'Montants Totaux (€)',
+                            data: data, // Montants
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54,162,235,0.2)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Évolution des Montants Totaux par Mois'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Période (Année-Mois)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Montant (€)'
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Erreur lors du chargement des données pour le graphique linéaire :", err);
+                alert("Impossible de charger les données pour le graphique linéaire.");
+            }
+        }
+
+        //Graphique comparatif en barres
+        async function loadComparatifChart() {
+            try {
+                const response = await fetch('/factures/comparatif');
+                const data = await response.json();
+
+                const labels = data.map(item => item.type_facture);
+                const currentMonth = data.map(item => item.current_month);
+                const previousMonth = data.map(item => item.previous_month);
+
+                const ctx = document.getElementById('chart-comparatif').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            { label: 'Mois Actuel', data: currentMonth, backgroundColor: '#36A2EB' },
+                            { label: 'Mois Précédent', data: previousMonth, backgroundColor: '#FF6384' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' },
+                            title: { display: true, text: 'Comparatif des Factures (Mois Actuel vs Précédent)' }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Erreur chargement comparatif :", err);
+                alert("Erreur lors du chargement des données pour le comparatif.");
+            }
+        }
+
+        async function loadFactures() {
+            try {
+                const response = await fetch('/factures');
+                if (!response.ok) throw new Error("Erreur lors du chargement des factures");
+                
+                const factures = await response.json();
+                const tableBody = document.getElementById('invoice-table');
+                tableBody.innerHTML = '';
+
+                factures.forEach(facture => {
+                    const date = facture.date_facture ? facture.date_facture.split(' ')[0] : 'Non défini';
+                    const montant = facture.montant ? facture.montant.toFixed(2) : '0.00';
+                    const type = facture.type_facture || 'Non défini';
+                    const statut = facture.statut || 'Non défini';
+
+                    const row = `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${montant} €</td>
+                            <td>${type}</td>
+                            <td>
+                                <select class="form-select" onchange="updateStatut(${facture.id_facture}, this.value)">
+                                    <option value="En attente" ${statut === 'En attente' ? 'selected' : ''}>En attente</option>
+                                    <option value="Payée" ${statut === 'Payée' ? 'selected' : ''}>Payée</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-custom-red" onclick="deleteFacture(${facture.id_facture})">Supprimer</button>
+                            </td>
+                        </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+
+            } catch (err) {
+                console.error("Erreur lors du chargement des factures :", err);
+                alert("Erreur lors du chargement des factures.");
+            }
+        }
+
+        document.getElementById('add-invoice-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id_logement = parseInt(document.getElementById('invoice-logement').value); // Vérifiez ce champ
+            const date_facture = document.getElementById('invoice-date').value;
+            const montant = parseFloat(document.getElementById('invoice-amount').value);
+            const type_facture = document.getElementById('invoice-type').value; // Vérifiez ici
+            const statut = document.getElementById('invoice-status').value;
+            const valeur_consommation = parseFloat(document.getElementById('invoice-consumption').value);
+            
+            console.log("Données envoyées :", { id_logement, date_facture, montant, valeur_consommation, type_facture, statut });
+
+            // Validation des données
+            if (!id_logement || !date_facture || isNaN(montant) || !type_facture) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/factures', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_logement, date_facture, montant, valeur_consommation, type_facture, statut })
+                });
+
+                if (response.ok) {
+                    alert("Facture et consommation ajoutées avec succès !");
+                    bootstrap.Modal.getInstance(document.getElementById('addInvoiceModal')).hide();
+                    loadFactures(); // Recharge la liste des factures
+                } else {
+                    const error = await response.json();
+                    alert(`Erreur : ${error.detail || "Impossible d'ajouter la facture."}`);
+                }
+            } catch (err) {
+                console.error("Erreur réseau :", err);
+                alert("Erreur réseau ou serveur.");
+            }
+        });
+
+
+        async function updateStatut(id_facture, statut) {
+            const response = await fetch(`/factures/${id_facture}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ statut })
+            });
+
+            if (response.ok) {
+                loadFactures();
+            } else {
+                alert("Erreur lors de la mise à jour du statut.");
+            }
+        }
+
+        async function deleteFacture(id_facture) {
+            if (confirm("Voulez-vous vraiment supprimer cette facture ?")) {
+                try {
+                    const response = await fetch(`/factures/${id_facture}`, { method: 'DELETE' });
+
+                    // Ajoutez des logs pour vérifier la réponse
+                    if (response.ok) {
+                        alert("Facture supprimée avec succès !");
+                        loadFactures(); // Recharge les factures après la suppression
+                    } else {
+                        const error = await response.json();
+                        alert(`Erreur : ${error.detail || "Impossible de supprimer la facture."}`);
+                    }
+                } catch (err) {
+                    console.error("Erreur réseau :", err);
+                    alert("Erreur réseau ou serveur.");
+                }
+            }
+        }
+       
+        // Appel les fonction lors du chargement de la page
+        loadKPIs();
+        loadEconomiesChart();
+        loadEvolutionChart();
+        loadComparatifChart();
+        loadFactures();
+    </script>
+    
+    <footer class="footer bg-light text-center py-3">
+        <p class="mb-0">© 2024 Economies Logement ARI Éco-Responsable - Tous droits réservés BAK</p>
+    </footer>
+</body>
+</html>

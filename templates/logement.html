@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logement Éco-Responsable {{ logement_id }}</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Police élégante */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Playfair Display', serif;
+            background: url('/static/images/logement{{ logement_id }}.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Alignement en haut */
+        }
+
+        .header {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #f5f5dc; /* Beige clair */
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .action-container {
+            position: relative;
+            width: 100%;
+            height: 70%;
+            margin-top: 30px;
+        }
+
+        .action-box {
+            background-color: rgba(141, 110, 99, 0.9); /* Marron clair avec transparence */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 12px;
+            padding: 20px;
+            width: 220px;
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #box-consommations {
+            top: 10%;
+            left: 25%;
+        }
+
+        #box-economies {
+            top: 10%;
+            right: 25%;
+        }
+
+        #box-capteurs {
+            bottom: 15%;
+            left: 25%;
+        }
+
+        #box-configurations {
+            bottom: 15%;
+            right: 25%;
+        }
+
+        .action-box:hover {
+            transform: scale(1.1);
+            background-color: rgba(109, 76, 65, 0.9);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            z-index: 1000; 
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .back-button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton de retour -->
+    <button class="back-button" id="backButton"><i class="fas fa-arrow-left"></i> Retour</button>
+
+    <div class="overlay">
+        <!-- Titre -->
+        <div class="header">
+            <h1>Logement {{ "KOU" if logement_id == 2 else "ARI" }} </h1>
+        </div>
+
+        <!-- Conteneur des actions -->
+        <div class="action-container">
+            <div id="box-consommations" class="action-box" onclick="location.href='/consommation?logement_id={{ logement_id }}'">
+                <i class="fas fa-chart-bar"></i><br>Consommations
+            </div>
+            <div id="box-economies" class="action-box" onclick="location.href='/economies?logement_id={{ logement_id }}'">
+                <i class="fas fa-piggy-bank"></i><br>Économies
+            </div>
+            <div id="box-capteurs" class="action-box" onclick="location.href='/capteurs?logement_id={{ logement_id }}'">
+                <i class="fas fa-tools"></i><br>Capteurs<br>Actionneurs
+            </div>
+            <div id="box-configurations" class="action-box" onclick="location.href='/configuration?logement_id={{ logement_id }}'">
+                <i class="fas fa-cogs"></i><br>Configurations
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Logement Éco-Responsable {{ logement_id }} - Tous droits réservés BAK</p>
+    </footer>
+
+    <script>
+        // Activer le bouton de retour
+        document.getElementById('backButton').addEventListener('click', function() {
+            if (window.history.length > 1) {
+                window.history.back(); // Retourne à la page précédente
+            } else {
+                location.href = '/'; // Redirige vers la page d'accueil si pas d'historique
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>     <!--type de doc-->
+<html lang="en">    <!--definition langue en anglais-->
+<head>
+    <meta charset="UTF-8">      <!--encodage pour representer tous les carcteres: compatibilite-->
+    <title>Camembert des Factures</title>   <!--titre de la page-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!--inclus bibliotheque google charts pour les graph-->
+    <script type="text/javascript">
+        //charge bib google charts avec package 'corechart' pour les graph
+        google.charts.load('current', {'packages':['corechart']});
+        //appel fonction Chart pour dessiner le graph
+        google.charts.setOnLoadCallback(Chart);
+
+        //fonction pour le camembert
+        function Chart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Type de Facture', 'Montant Total'],   //en têtes des colonnes
+                {% for facture in factures %}   //boucle sur les factures passées par le backend
+                    ['{{ facture["type_facture"] }}', {{ facture["total_montant"] }}]{% if not loop.last %},{% endif %}
+                    //ajoute une ligne pour chaque facture avec son type et son montant total
+                {% endfor %}
+            ]);
+
+            //personnalisation du graph pour le style
+            var options = {
+                title: 'Répartition des factures',
+                is3D: true    //active leffet 3D
+                //pieHole: 0.4    // forme de donut
+            };                                                                                                    
+
+            //cree le graph de type camembert avec l'ID 'piechart'
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            //dessine le graph avec les donnees et les options definit
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<!--fin de l'en tete-->
+<body>
+    <h1>Répartition des montants des factures</h1> <!--titre principal de la page-->
+    <div id="piechart" style="width: 900px; height: 500px;"></div>  <!--dimensions specifiques pour laffichage du graphe-->
+</body>
+</html>

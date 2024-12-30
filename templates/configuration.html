@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration des Capteurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Barre de navigation */
+        .navbar {
+            background-color: #03b647;
+            padding: 5px 15px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .navbar a.active-page {
+            background-color: #91e5a3;
+            font-weight: bold;
+        }
+
+        /* Bannière */
+        .banner-eco {
+            background-color: #dff0d8; /* Vert pâle */
+            color: #2e7d32; 
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 3px solid #4caf50; 
+        }
+
+        .banner-eco h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .banner-eco p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+         /* Titre 1 */
+         h1 {
+            text-align: center;
+            margin: 30px auto; 
+            color: #2e7d32; 
+            font-weight: bold; 
+            font-size: 2.5rem; 
+            font-family: 'Arial', sans-serif; 
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+            border-bottom: 3px solid #81c784;
+            padding-bottom: 10px; 
+            width: fit-content; 
+        }
+
+        /*Titre 2 */
+        h2 {
+            margin: 12px 0;
+            color: #47483f;
+        }
+
+        table {
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 12px;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-orange {
+            background-color: #3a7209 !important;
+            border: none;
+            color: white;
+        }
+
+        /* Style pour les boutons "Modifier" */
+        .btn-custom-green {
+            background-color: #3a7209 !important; 
+            color: white !important;
+            border: none;
+        }
+
+        /* Style pour les boutons "Supprimer" */
+        .btn-custom-red {
+            background-color: #de1313 !important; 
+            color: white !important;
+            border: none;
+        }
+
+        /* Style pour les boutons "Ajouter un Utilisateur" */
+        .btn-custom-add {
+            background-color: #3a7209 !important; 
+            color: white !important;
+            border: none;
+        }
+
+        .modal-content {
+            background: #fff;
+        }
+
+        .footer {
+            background-color: #f8f9fa; 
+            color: #6c757d; 
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef; 
+            position: relative; 
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Espaces entre les sections */
+        .section-space {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar">
+        <a href="/" class="">Accueil</a>
+        <a href="/capteurs" class="">Capteurs</a>
+        <a href="/configuration" class="active-page">Configuration</a>
+        <a href="/consommation" class="">Consommations</a>
+        <a href="/economies" class="">Économies</a>
+    </nav>
+
+    <!-- Bannière -->
+    <div class="banner-eco text-center">
+        <h2><i class="fas fa-leaf"></i> Logement Éco-Responsable</h2>
+        <p>Gérez les capteurs et utilisateurs pour optimiser votre logement 🌿</p>
+    </div>
+
+    <!-- Contenu Principal -->
+    <div class="container">
+        <h1>Gestion du logement</h1>
+        <!-- Section Capteurs -->
+        <div class="section-space mb-5">
+            <h2> <i class="fas fa-microchip"></i> Gestion des Capteurs</h2>
+
+            <!-- Bouton Ajouter -->
+            <button class="btn btn-custom-green mb-3" data-bs-toggle="modal" data-bs-target="#addCapteurModal"> <i class="fas fa-plus-circle"></i> Ajouter un Capteur</button>
+
+            <!-- Tableau des Capteurs -->
+            <table class="table table-striped">
+                <thead class="table-success">
+                    <tr>
+                        <th>Pièce</th>
+                        <th>Référence</th>
+                        <th>Type</th>
+                        <th>Port</th>
+                        <th>État</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="capteur-table"></tbody>
+            </table>
+        <div>
+
+        <!-- Section Gestion des Utilisateurs -->
+        <div class="section-space mt-5">
+            <h2><i class="fas fa-users"></i> Gestion des Utilisateurs</h2>
+            <!-- Bouton Ajouter Utilisateur -->
+            <button class="btn btn-custom-add mb-3" data-bs-toggle="modal" data-bs-target="#addUserModal"> <i class="fas fa-user-plus"></i> Ajouter un Utilisateur</button>
+
+            <!-- Tableau des Utilisateurs -->
+            <table class="table table-striped">
+                <thead class="table-info">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table"></tbody>
+            </table>
+    </div>
+
+    <!-- Modal Ajouter un Capteur -->
+    <div class="modal fade" id="addCapteurModal" tabindex="-1" aria-labelledby="addCapteurModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un Capteur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-capteur-form">
+                        <div class="mb-3">
+                            <label for="piece" class="form-label">Pièce</label>
+                            <select id="piece" class="form-select" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reference" class="form-label">Référence</label>
+                            <input type="text" id="reference" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select id="type" class="form-select" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mesure" class="form-label">Mesure</label>
+                            <input type="number" step="0.01" id="mesure" class="form-control" placeholder="Entrez la mesure" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ajouter un Utilisateur -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form">
+                        <input id="user-nom" class="form-control mb-2" placeholder="Nom" required>
+                        <input id="user-prenom" class="form-control mb-2" placeholder="Prénom" required>
+                        <input id="user-email" class="form-control mb-2" placeholder="Email" required>
+                        <input id="user-telephone" class="form-control mb-2" placeholder="Téléphone" required>
+                        <input id="user-mdp" type="password" class="form-control mb-2" placeholder="Mot de passe" required>
+                        <select id="user-type" class="form-select mb-2">
+                            <option value="proprietaire">Propriétaire</option>
+                            <option value="resident">Résident</option>
+                        </select>
+                        <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modifier Utilisateur -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier un Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-user-form">
+                        <input id="edit-id" type="hidden">
+                        <input id="edit-nom" class="form-control mb-2" placeholder="Nom" required>
+                        <input id="edit-prenom" class="form-control mb-2" placeholder="Prénom" required>
+                        <input id="edit-email" class="form-control mb-2" placeholder="Email" required>
+                        <input id="edit-telephone" class="form-control mb-2" placeholder="Téléphone" required>
+                        <select id="edit-type" class="form-select mb-2">
+                            <option value="proprietaire">Propriétaire</option>
+                            <option value="resident">Résident</option>
+                        </select>
+                        <button type="submit" class="btn btn-custom-green w-100">Modifier</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function loadCapteurs() {
+            const response = await fetch('/capteurs/gestion?logement_id=1');
+            const capteurs = await response.json();
+            const tableBody = document.getElementById('capteur-table');
+            tableBody.innerHTML = '';
+
+            capteurs.forEach(capteur => {
+                const row = `
+                    <tr>
+                        <td>${capteur.piece}</td>
+                        <td>${capteur.reference}</td>
+                        <td>${capteur.type}</td>
+                        <td>${capteur.port}</td>
+                        <td>
+                            <span class="badge ${capteur.status === 'Actif' ? 'bg-success' : 'bg-danger'}">
+                                ${capteur.status}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm ${capteur.status === 'Actif' ? 'btn-orange' : 'btn-success'}" 
+                                    onclick="toggleCapteur(${capteur.id})">
+                                ${capteur.status === 'Actif' ? 'Désactiver' : 'Activer'}
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="supprimerCapteur(${capteur.id})">Supprimer</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        async function loadFormOptions() {
+            const pieces = await fetch('/pieces').then(res => res.json());
+            const types = await fetch('/types').then(res => res.json());
+
+            document.getElementById('piece').innerHTML = pieces.map(p => `<option value="${p.id}">${p.nom}</option>`).join('');
+            document.getElementById('type').innerHTML = types.map(t => `<option value="${t.id}">${t.nom}</option>`).join('');
+        }
+
+        async function toggleCapteur(id) {
+            const response = await fetch(`/capteurs/${id}/toggle`, { method: 'POST' });
+            if (response.ok) loadCapteurs();
+            else alert("Erreur lors de la mise à jour.");
+        }
+
+        async function supprimerCapteur(id) {
+            if (confirm("Voulez-vous vraiment supprimer ce capteur ?")) {
+                await fetch(`/capteurs/${id}`, { method: 'DELETE' });
+                loadCapteurs();
+            }
+        }
+
+        // Charger les utilisateurs
+        async function loadUtilisateurs() {
+            const response = await fetch('/utilisateurs?id_logement=1');
+            const utilisateurs = await response.json();
+            const tableBody = document.getElementById('user-table');
+            tableBody.innerHTML = '';
+
+            utilisateurs.forEach(user => {
+                const row = `
+                    <tr>
+                        <td>${user.nom}</td>
+                        <td>${user.prenom}</td>
+                        <td>${user.email}</td>
+                        <td>${user.telephone}</td>
+                        <td>${user.type_utilisateur}</td>
+                        <td>
+                            <button class="btn btn-sm btn-custom-green" 
+                                onclick="openEditModal('${user.id_utilisateur}', '${user.nom}', '${user.prenom}', '${user.email}', '${user.telephone}', '${user.type_utilisateur}')">
+                                Modifier
+                            </button>
+                            <button class="btn btn-sm btn-custom-red" onclick="deleteUtilisateur(${user.id_utilisateur})">Supprimer</button>
+                        </td>
+                    </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+
+        function openEditModal(id, nom, prenom, email, telephone, type_utilisateur) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-nom').value = nom;
+            document.getElementById('edit-prenom').value = prenom;
+            document.getElementById('edit-email').value = email;
+            document.getElementById('edit-telephone').value = telephone;
+            document.getElementById('edit-type').value = type_utilisateur;
+
+            const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            modal.show();
+        }
+
+
+        async function updateUtilisateur() {
+            const id = document.getElementById('edit-id').value;
+            const nom = document.getElementById('edit-nom').value;
+            const prenom = document.getElementById('edit-prenom').value;
+            const email = document.getElementById('edit-email').value;
+            const telephone = document.getElementById('edit-telephone').value;
+            const type = document.getElementById('edit-type').value;
+
+            const response = await fetch(`/utilisateurs/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nom, prenom, email, telephone, type_utilisateur: type })
+            });
+
+            if (response.ok) {
+                alert('Utilisateur mis à jour avec succès !');
+                loadUtilisateurs();
+            } else {
+                alert("Erreur lors de la mise à jour.");
+            }
+        }
+        
+        // Ajouter un utilisateur
+        async function addUtilisateur() {
+            const form = document.getElementById('add-user-form');
+            const data = {
+                nom: form['user-nom'].value,
+                prenom: form['user-prenom'].value,
+                email: form['user-email'].value,
+                telephone: form['user-telephone'].value,
+                mdp: form['user-mdp'].value,
+                type_utilisateur: form['user-type'].value
+            };
+            await fetch('/utilisateurs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            loadUtilisateurs();
+        }
+
+        async function deleteUtilisateur(id) {
+            if (confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
+                const response = await fetch(`/utilisateurs/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    alert("Utilisateur supprimé avec succès !");
+                    loadUtilisateurs();
+                } else {
+                    alert("Erreur : Impossible de supprimer l'utilisateur.");
+                }
+            }
+        }
+
+        
+
+        //ajouter utilisateur
+        document.getElementById('add-user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = {
+                nom: document.getElementById('user-nom').value,
+                prenom: document.getElementById('user-prenom').value,
+                email: document.getElementById('user-email').value,
+                telephone: document.getElementById('user-telephone').value,
+                mdp: document.getElementById('user-mdp').value,
+                type_utilisateur: document.getElementById('user-type').value
+            };
+
+            const response = await fetch('/utilisateurs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (response.ok) {
+                alert('Utilisateur ajouté avec succès !');
+                bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+                loadUtilisateurs();
+            } else {
+                alert("Erreur : Impossible d'ajouter l'utilisateur.");
+            }
+        });
+
+        //modifier utilisateur 
+        document.getElementById('edit-user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const user = {
+                nom: document.getElementById('edit-nom').value,
+                prenom: document.getElementById('edit-prenom').value,
+                email: document.getElementById('edit-email').value,
+                telephone: document.getElementById('edit-telephone').value,
+                type_utilisateur: document.getElementById('edit-type').value
+            };
+
+            const response = await fetch(`/utilisateurs/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (response.ok) {
+                alert('Utilisateur modifié avec succès !');
+                bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+                loadUtilisateurs();
+            } else {
+                alert("Erreur : Impossible de modifier l'utilisateur.");
+            }
+        });
+        
+        loadUtilisateurs();
+        loadCapteurs();
+        loadFormOptions();
+    </script>
+    <footer class="footer bg-light text-center py-3">
+        <p class="mb-0">© 2024 Configuration Logement ARI Éco-Responsable - Tous droits réservés BAK</p>
+    </footer>
+</body>
+</html>
