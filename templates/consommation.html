@@ -242,12 +242,12 @@
             google.visualization.events.addListener(chart, "select", () => {
                 const selection = chart.getSelection();
                 if (selection.length > 0) {
-                    const selectedRow = selection[0].row; // Ligne sélectionnée
-                    const selectedYear = chartData[selectedRow + 1][0]; // Année sélectionnée
+                    const selectedRow = selection[0].row; 
+                    const selectedYear = chartData[selectedRow + 1][0]; 
                     if (level === "year") {
                         currentLevel = "month";
                         currentYear = selectedYear;
-                        loadData("month", selectedYear); // Charger les données mensuelles
+                        loadData("month", selectedYear); 
                     }
                 }
             });
@@ -257,7 +257,7 @@
                 if (level === "month") {
                     currentLevel = "year";
                     currentYear = null;
-                    loadData("year"); // Charger les données annuelles
+                    loadData("year"); 
                 }
             });
 

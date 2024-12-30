@@ -26,77 +26,12 @@ API_key = "94c7c64b9837bbc14e804c57df4f94f2"
 def read_root():
     return {"message": "Bienvenue sur le serveur FastAPI"}
 
-#route pour recuperer les previsions meteo sur 5 j
-#recupere les prévisions météo pour une ville donnée
-@app.get("/meteo/{ville}", response_class=JSONResponse)
-async def get_meteo(ville: str):
-    #url api openweather
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={ville}&appid={API_key}&units=metric"
-    response = requests.get(url)    #appel api
-
-    if response.status_code == 200:
-        data = response.json()
-        previsions = []
-        for item in data ['list']:
-            prevision = {
-                "date": item["dt_txt"],
-                "temperature": item["main"]["temp"],
-                "description": item["weather"][0]["description"]
-            }
-            previsions.append(prevision)
-
-        return {"ville": ville, "previsions": previsions}
-    else:
-        raise HTTPException(status_code=404, detail="Données météo non trouvées")
-
+#Exercice 1
 # connexion a la base de donnee 
 def get_db_con():
     conn = sqlite3.connect('/Users/bakary/Documents/Annee4/iot/TP1_bdd/bdd/bibli.db')
     conn.row_factory = sqlite3.Row
     return conn
-
-#route GET pour voir les mesures
-#@app.route('/mesures', methods=['GET'])
-@app.get("/mesures/all")
-
-def get_mesures():
-    conn = get_db_con()       #ouvre une connexion à la bdd
-    c = conn.cursor()         #curseur pour executer les commandes
-    mesures = c.execute("SELECT * FROM Mesure").fetchall()  #recupere toutes les mesures
-    conn.close() 
-    return [dict(row) for row in mesures]        
-
-# Modèle des données reçues
-class DHTData(BaseModel):
-    id_capteur: int
-    temperature: float
-    humidite: float
-
-@app.post("/mesures/from_sensor")
-async def insert_mesure(data: DHTData):
-    conn = get_db_con()
-    cursor = conn.cursor()
-
-    try:
-        # Insérer la température
-        cursor.execute(
-            "INSERT INTO Mesure (id_capteur, valeur, date_insertion) VALUES (?, ?, CURRENT_TIMESTAMP)",
-            (data.id_capteur, data.temperature)
-        )
-
-        # Insérer l'humidité
-        cursor.execute(
-            "INSERT INTO Mesure (id_capteur, valeur, date_insertion) VALUES (?, ?, CURRENT_TIMESTAMP)",
-            (data.id_capteur + 1, data.humidite)  # Supposons que l'humidité a un capteur différent
-        )
-
-        conn.commit()
-        return {"message": "Données insérées avec succès"}
-    except Exception as e:
-        conn.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        conn.close()
 
 #route POST pour ajouter les mesures
 #@app.route('/mesures', methods=['POST'])
@@ -145,7 +80,7 @@ def post_mesures():
     conn.close()
     return {"MSG": "Mesures aleatoires ajoutées avec succès"}
 
-
+#Exercice 2
 #route GET pour voir les factures
 #@app.route('/factures', methods=['GET'])
 @app.get("/factures/camembert", response_class=HTMLResponse)
@@ -218,4 +153,74 @@ def post_factures():
     conn.close()
     return {"MSG": "Factures ajoutées avec succès"}
 
+
+#route GET pour voir les mesures
+#@app.route('/mesures', methods=['GET'])
+@app.get("/mesures/all")
+
+def get_mesures():
+    conn = get_db_con()       #ouvre une connexion à la bdd
+    c = conn.cursor()         #curseur pour executer les commandes
+    mesures = c.execute("SELECT * FROM Mesure").fetchall()  #recupere toutes les mesures
+    conn.close() 
+    return [dict(row) for row in mesures]        
+
+#Exercice 3
+
+#route pour recuperer les previsions meteo sur 5 j
+#recupere les prévisions météo pour une ville donnée
+@app.get("/meteo/{ville}", response_class=JSONResponse)
+async def get_meteo(ville: str):
+    #url api openweather
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q={ville}&appid={API_key}&units=metric"
+    response = requests.get(url)    #appel api
+
+    if response.status_code == 200:
+        data = response.json()
+        previsions = []
+        for item in data ['list']:
+            prevision = {
+                "date": item["dt_txt"],
+                "temperature": item["main"]["temp"],
+                "description": item["weather"][0]["description"]
+            }
+            previsions.append(prevision)
+
+        return {"ville": ville, "previsions": previsions}
+    else:
+        raise HTTPException(status_code=404, detail="Données météo non trouvées")
+
+#Exercice 4
+
+# Modèle des données reçues
+class DHTData(BaseModel):
+    id_capteur: int
+    temperature: float
+    humidite: float
+
+@app.post("/mesures/from_sensor")
+async def insert_mesure(data: DHTData):
+    conn = get_db_con()
+    cursor = conn.cursor()
+
+    try:
+        # Insérer la température
+        cursor.execute(
+            "INSERT INTO Mesure (id_capteur, valeur, date_insertion) VALUES (?, ?, CURRENT_TIMESTAMP)",
+            (data.id_capteur, data.temperature)
+        )
+
+        # Insérer l'humidité
+        cursor.execute(
+            "INSERT INTO Mesure (id_capteur, valeur, date_insertion) VALUES (?, ?, CURRENT_TIMESTAMP)",
+            (data.id_capteur + 1, data.humidite)  # Supposons que l'humidité a un capteur différent
+        )
+
+        conn.commit()
+        return {"message": "Données insérées avec succès"}
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        conn.close()
 

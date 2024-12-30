@@ -3,6 +3,7 @@
 -- sqlite3 bibli.db
 -- read sql/logement.sql
 -- open bibli.db
+--Partie 1
 
 
 -- Suppression des tables existantes
@@ -14,7 +15,7 @@ DROP TABLE IF EXISTS Capteur_Actionneur;
 DROP TABLE IF EXISTS Mesure;
 DROP TABLE IF EXISTS Facture;
 
-
+ --Question 2 / 3
 -- Création des tables
 -- Table Utilisateur : Gère les informations des utilisateurs (propriétaires et résidents)
 CREATE TABLE Utilisateur (
@@ -30,6 +31,7 @@ CREATE TABLE Utilisateur (
     FOREIGN KEY (id_logement) REFERENCES Logement(id_logement)      --liaison avec table logement
 );
 
+
 ALTER TABLE Facture ADD COLUMN statut TEXT DEFAULT 'en attente';
 
 -- Table Logement : Contient les informations relatives aux logements
@@ -42,7 +44,7 @@ CREATE TABLE Logement (
     superficie REAL         --superficie du logement (en m^2)
 );
 
-
+--Question 4
 -- Table Piece : Représente les pièces dans chaque logement avec leur coordonnee 3D
 CREATE TABLE Piece (
     id_piece INTEGER PRIMARY KEY AUTOINCREMENT,        --id unique pour chaque piece
@@ -54,13 +56,7 @@ CREATE TABLE Piece (
     FOREIGN KEY (id_logement) REFERENCES Logement(id_logement) --reference au logement associée
 );
 
--- Table TypeCapteur : Définit les différents types de capteurs et leurs caractéristiques
-CREATE TABLE TypeCapteur (
-    id_type INTEGER PRIMARY KEY AUTOINCREMENT,      -- id unique pour chaque type de capteur
-    nom_type TEXT NOT NULL,  --nom du type de capteur temeprature, humidité ...
-    unite_mesure TEXT  --unité associee au capteur °C, lux ...
-);
-
+--Question 5
 -- Table Capteur_Actionneur : Enregistre les capteurs/actionneurs dans les pièces
 CREATE TABLE Capteur_Actionneur (
     id_capteur INTEGER PRIMARY KEY AUTOINCREMENT,       -- id unique pour chaque C/A
@@ -74,6 +70,15 @@ CREATE TABLE Capteur_Actionneur (
     FOREIGN KEY (id_type) REFERENCES TypeCapteur(id_type) -- reference au type de capteur associé
 );
 
+--Question 6
+-- Table TypeCapteur : Définit les différents types de capteurs et leurs caractéristiques
+CREATE TABLE TypeCapteur (
+    id_type INTEGER PRIMARY KEY AUTOINCREMENT,      -- id unique pour chaque type de capteur
+    nom_type TEXT NOT NULL,  --nom du type de capteur temeprature, humidité ...
+    unite_mesure TEXT  --unité associee au capteur °C, lux ...
+);
+
+-- Question 7
 -- Table Mesure : Stocke les valeurs mesurées par chaque capteur.
 CREATE TABLE Mesure (
     id_mesure INTEGER PRIMARY KEY AUTOINCREMENT,    -- id unique pour chaque mesure
@@ -83,7 +88,7 @@ CREATE TABLE Mesure (
     FOREIGN KEY (id_capteur) REFERENCES Capteur_Actionneur(id_capteur)      -- referenvce au capteur associé 
 );
 
-
+--Question 8
 -- Table Facture : Contient les factures de consommation pour chaque logement
 CREATE TABLE Facture (
     id_facture INTEGER PRIMARY KEY AUTOINCREMENT,   --id unique pour chaque facture
@@ -95,6 +100,7 @@ CREATE TABLE Facture (
     FOREIGN KEY (id_logement) REFERENCES Logement(id_logement)      --reference au logement associe
 );
  
+-- Remplissage base de donnes
 
 --Insertion d'utilisateurs pour un logement 
 INSERT INTO Utilisateur (nom, prenom, email, telephone, mdp, type_utilisateur, id_logement)

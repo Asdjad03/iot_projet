@@ -155,11 +155,11 @@
         }
         
         .footer {
-            background-color: #f8f9fa; /* Couleur de fond douce */
-            color: #6c757d; /* Texte gris */
-            font-size: 0.9rem; /* Taille du texte */
-            border-top: 1px solid #e9ecef; /* Ligne séparatrice discrète */
-            position: relative; /* Par défaut, ajustable */
+            background-color: #f8f9fa; 
+            color: #6c757d; 
+            font-size: 0.9rem; 
+            border-top: 1px solid #e9ecef; 
+            position: relative;
             bottom: 0;
             width: 100%;
         }
@@ -189,15 +189,10 @@
     </div>
 
     <script>
-        // Fonction pour revenir à la page précédente
-        function goBack() {
-            window.history.back(); // Revenir à la page précédente
-        }
-
         // Fonction pour charger les données des capteurs
         async function loadSensorData() {
             try {
-                const logementId = 1; // Changez selon le logement voulu
+                const logementId = 1; 
                 const response = await fetch(`/capteurs/data?logement_id=${logementId}`);
                 const data = await response.json();
 
