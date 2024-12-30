@@ -11,7 +11,7 @@ const char* serverUrl = "http://172.20.10.13:5001/mesures/from_sensor";
 
 // DHT configuration
 #define DHTPIN D1 // Broche connectée au capteur
-#define DHTTYPE DHT11 // Type de capteur (DHT11 ou DHT22)
+#define DHTTYPE DHT11 // Type de capteur 
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -29,7 +29,6 @@ void setup() {
     Serial.println("Connexion au WiFi...");
   }
 
-  // Afficher l'adresse IP du module ESP8266
   Serial.println("Connecté au WiFi : " + WiFi.localIP().toString());
 }
 
@@ -38,7 +37,7 @@ void loop() {
   float temperature = dht.readTemperature();
   float humidite = dht.readHumidity();
 
-  // Afficher les valeurs lues dans le moniteur série
+  // Affiche les valeurs lues dans le moniteur série
   if (isnan(temperature) || isnan(humidite)) {
     Serial.println("Erreur de lecture du capteur DHT !");
   } else {
@@ -51,21 +50,21 @@ void loop() {
     Serial.println(" %");
   }
 
-  // Envoyer les données au serveur si le WiFi est connecté
+  // Envoie les données au serveur si le WiFi est connecté
   if (WiFi.status() == WL_CONNECTED && !isnan(temperature) && !isnan(humidite)) {
     HTTPClient http;
 
     // Construire la charge utile JSON
     String jsonPayload = "{\"id_capteur\": 1, \"temperature\": " + String(temperature) + ", \"humidite\": " + String(humidite) + "}";
 
-    // Préparer la requête HTTP
+    // Prépare la requête HTTP
     http.begin(client, serverUrl);
     http.addHeader("Content-Type", "application/json");
 
-    // Envoyer les données au serveur
+    // Envoie les données au serveur
     int httpResponseCode = http.POST(jsonPayload);
 
-    // Afficher la réponse du serveur ou l'erreur
+    // Affiche la réponse du serveur ou l'erreur
     if (httpResponseCode > 0) {
       String response = http.getString();
       Serial.println("Réponse du serveur : " + response);
@@ -73,7 +72,6 @@ void loop() {
       Serial.println("Erreur d'envoi au serveur. Code HTTP : " + String(httpResponseCode));
     }
 
-    // Fermer la requête
     http.end();
   } else if (WiFi.status() != WL_CONNECTED) {
     Serial.println("WiFi non connecté !");
