@@ -1,0 +1,21 @@
+# Partie 3: Site Web - Logement Eco_responsable
+
+Cette partie consiste en la création d’un site web interactif et responsive permettant de gérer les fonctionnalités du logement éco-responsable. 
+Ce site est développé avec HTML5, CSS3, Bootstrap, et JavaScript, et s’appuie sur les templates générés dynamiquement via Jinja2.
+
+Le site se compose des pages suivantes :
+
+Page d'accueil  : 'templates/accueil.html'
+Liste des logements disponibles et accès aux fonctionnalités principales.
+
+Page Consommation : 'templates/consommation.html'
+Présente les consommations énergétiques sous forme de graphiques (électricité, eau, gaz, etc.).
+
+Page Capteurs : 'templates/capteurs.html'
+Affiche la liste des capteurs/actionneurs et leurs états actuels.
+
+Page Économies :  'templates/economies.html'
+Compare les économies réalisées sur différentes périodes.
+
+Page Configuration : 'templates/configuration.html'
+Permet de gérer les paramètres utilisateurs, ainsi que l’ajout et la gestion des capteurs/actionneurs.

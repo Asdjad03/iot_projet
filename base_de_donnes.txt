@@ -1,0 +1,21 @@
+# Partie 1 : remplissage de la Base de données
+
+# Description
+Ce fichier SQL initialise la base de données nécessaire pour le projet. 
+
+# Emplacement
+Fichier concerné : `sql/logement.sql`
+
+# Étapes
+1. Lancez SQLite et créez la base de données :
+sqlite3 bibli.db .read sql/logement.sql
+
+2. Remplissez la base de données avec les fichiers Python :
+python python/remplissage_1.py python python/remplissage_2.py python python/remplissage_3.py python python/remplissage_4.py
+
+- Ces fichiers insèrent des données initiales dans les tables.
+- Le fichier final `remplissage.py` combine tout et répond aux questions liées au TP.
+-Le fichier remplissage_1.py correspond au fichier de remplissage de la base de donnée de la partie 1
+
+3. La base de données est prête à être utilisée par le serveur.
+bibli.db

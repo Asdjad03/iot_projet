@@ -1,0 +1,67 @@
+# Partie 2 : Serveur FastAPI
+
+###Exercice 1 : remplissage de la base de données
+# Description
+On met en place un serveur FastAPI pour gérer les données de mesures et de factures liées aux logements. Il expose des API REST permettant de consulter et d'ajouter des données via des routes dédiées.
+
+# Emplacement
+Fichier concerné : `python/remplissage_2.py`
+
+# Fonctionnalités principales
+Routes pour les mesures :
+GET /mesures : Retourne toutes les mesures enregistrées dans la base.
+POST /mesures : Ajoute 5 mesures aléatoires pour chaque capteur en fonction de leur type (température, humidité, etc.).
+
+Routes pour les factures :
+GET /factures : Retourne toutes les factures enregistrées dans la base.
+POST /factures : Ajoute des factures aléatoires pour chaque type de manière à avoir des valeurs cohérentes (électricité, eau, gaz, déchets) dans tous les logements.
+
+###Exercice 2 : serveur web
+# Description
+On étend les fonctionnalités du serveur FastAPI en ajoutant un affichage des données sous forme graphique grâce à l'intégration de Google Charts. Ce serveur web offre également la possibilité de visualiser les mesures et factures, tout en ajoutant des données aléatoires.
+
+# Emplacement
+Fichier concerné : `python/remplissage_3.py`
+
+# Fonctionnalités principales
+Routes pour les mesures :
+GET /mesures : Retourne toutes les mesures enregistrées dans la base.
+POST /mesures : Ajoute 5 mesures aléatoires pour chaque capteur en fonction de leur type (température, humidité, etc.).
+
+Routes pour les factures :
+GET /factures/camembert :
+Génère une page HTML affichant un diagramme en camembert des types de factures et leurs montants totaux.
+Utilise Google Charts pour visualiser les données.
+POST /factures : Ajoute des factures aléatoires pour chaque type (électricité, eau, gaz, déchets, chauffage) dans tous les logements.
+
+###Exercice 3 :  météo
+# Description
+On étend le serveur FastAPI pour intégrer les données météo en utilisant l'API OpenWeather. Il offre la possibilité de récupérer les prévisions météo pour une ville, de visualiser les données via des graphiques, et d’ajouter ou consulter des données de factures et de mesures.
+# Emplacement
+Fichier concerné : `python/remplissage_4.py`
+
+# Fonctionnalités principales
+Prévisions météo :
+Route : GET /meteo/{ville}
+Appelle l'API OpenWeather pour récupérer les prévisions météo sur 5 jours pour une ville donnée.
+Retourne les données sous forme de JSON contenant la date, la température, et une description météo.
+
+Gestion des mesures :
+Même que pour l'exercice précédent.
+
+###Exercice 4:  intégration
+# Description
+On rajoute au fichier précédent l'intégration de mesures provenant d'un capteur DHT11 (température et humidité).# Emplacement
+Et de plus on fait le programme Arduino destiné à un module ESP8266. Il collecte les données de température et d'humidité depuis un capteur DHT11, puis les envoie au serveur FastAPI via une requête HTTP POST.
+
+#Fichier concerné : `python/remplissage.py` et 'send_temp/send_temp.ino'
+
+# Fonctionnalités principales
+Envoi des données au serveur :
+Formate les données collectées en JSON.
+Envoie une requête POST à l'URL du serveur configurée (serverUrl).
+
+Ajout de mesures provenant d'un capteur DHT11 :
+Route : POST /mesures/from_sensor
+Reçoit des mesures de température et d'humidité en JSON et les enregistre dans la base de données.
+Chaque mesure est associée à un capteur spécifique.
