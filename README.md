@@ -5,16 +5,16 @@
 Ce projet consiste en la création d'une application web permettant de gérer les consommations énergétiques d'un logement, ses capteurs/actionneurs, et d'effectuer des configurations. L'application est développée en Python avec le framework FastAPI et utilise une base de données SQLite pour stocker les informations.
 
 ## 2.Structure du projet
-  •	mon_env/ : Dossier contenant l'environnement virtuel Python (optionnel à inclure dans le dépôt).
-  •	python/ : Contient les fichiers Python nécessaires au projet, comme app.py, le fichier principal pour lancer le serveur et remplissage*.py pour répondre à toutes les questions du projet.
-  •	send_temp/ : Contient le fichier Arduino send_temp.ino pour simuler ou interagir avec des capteurs.
-  •	sql/ : Dossier avec le script SQL logement.sql pour créer la base de données.
-  •	static/ : Contient les fichiers statiques (CSS, JS, images) pour le front-end.
-  •	templates/ : Contient les fichiers HTML (gabarits Jinja2) pour les pages web.
-  •	venv/ : Environnement virtuel pour les dépendances Python.
-  •	bibli.db : Base de données SQLite contenant les informations des logements et capteurs.
-  •	requirements.txt : Fichier utilisé pour installer les dépendances Python avec pip.
-  •	README.md : Ce fichier, contenant les explications sur le projet et comment le lancer.
+  -	mon_env/ : Dossier contenant l'environnement virtuel Python (optionnel à inclure dans le dépôt).
+  -	python/ : Contient les fichiers Python nécessaires au projet, comme app.py, le fichier principal pour lancer le serveur et remplissage*.py pour répondre à toutes les questions du projet.
+  -	send_temp/ : Contient le fichier Arduino send_temp.ino pour simuler ou interagir avec des capteurs.
+  -	sql/ : Dossier avec le script SQL logement.sql pour créer la base de données.
+  -	static/ : Contient les fichiers statiques (CSS, JS, images) pour le front-end.
+  -	templates/ : Contient les fichiers HTML (gabarits Jinja2) pour les pages web.
+  -	venv/ : Environnement virtuel pour les dépendances Python.
+  -	bibli.db : Base de données SQLite contenant les informations des logements et capteurs.
+  -	requirements.txt : Fichier utilisé pour installer les dépendances Python avec pip.
+  -	README.md : Ce fichier, contenant les explications sur le projet et comment le lancer.
 
 ## 3. Installation et lancement
 •	Prérequis
