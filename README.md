@@ -1,10 +1,10 @@
 # **iot_projet BAKARY**
-#Projet IoT : Logement Éco-Responsable
+# Projet IoT : Logement Éco-Responsable
 
-##1.Description du projet
+## 1.Description du projet
 Ce projet consiste en la création d'une application web permettant de gérer les consommations énergétiques d'un logement, ses capteurs/actionneurs, et d'effectuer des configurations. L'application est développée en Python avec le framework FastAPI et utilise une base de données SQLite pour stocker les informations.
 
-##2.Structure du projet
+## 2.Structure du projet
   •	mon_env/ : Dossier contenant l'environnement virtuel Python (optionnel à inclure dans le dépôt).
   •	python/ : Contient les fichiers Python nécessaires au projet, comme app.py, le fichier principal pour lancer le serveur et remplissage*.py pour répondre à toutes les questions du projet.
   •	send_temp/ : Contient le fichier Arduino send_temp.ino pour simuler ou interagir avec des capteurs.
@@ -16,7 +16,7 @@ Ce projet consiste en la création d'une application web permettant de gérer le
   •	requirements.txt : Fichier utilisé pour installer les dépendances Python avec pip.
   •	README.md : Ce fichier, contenant les explications sur le projet et comment le lancer.
 
-##3. Installation et lancement
+## 3. Installation et lancement
 •	Prérequis
 #Avant de lancer le projet, assurez-vous d'avoir installé les éléments suivants :
 Python 3.10+  - Veillez à ce que Python soit installé sur votre machine.
@@ -24,15 +24,15 @@ Git - Pour cloner ce dépôt.
 SQLite  -  Pour gérer la base de données.
 Arduino IDE – pour l’ajout de données via capteur send_temp.ino
 
-•	Bibliothèques Python nécessaires : 
+  •	Bibliothèques Python nécessaires : 
 pip install fastapi uvicorn jinja2 pydantic requests
-•	Installation : 
+  •	** Installation : **
 
-###1.	Cloner le dépôt git 
+### 1.	Cloner le dépôt git 
 git clone https://github.com/Asdjad03/iot_projet.git
 cd iot_projet
 
-###2.	Installer les dépendances 
+### 2.	Installer les dépendances 
 Créez un environnement virtuel et installez les bibliothèques suivantes :
 
 # Créer un environnement virtuel
@@ -42,7 +42,7 @@ source mon_env/bin/activate   # Sur Windows, `mon_env\Scripts\activate`
 # Installer les dépendances
 pip install -r requirements.txt
 
-###3.	Configurer la base de données
+### 3.	Configurer la base de données
 Comme j’ai déjà rempli la base de données (bibli.db) cette étape n’est plus nécessaire.
 
 #Générer la base de données
@@ -68,23 +68,23 @@ Si port déjà utilisé : lsof -i :5001 puis arrêter le processus kill - 9 PID 
 •	Interface web : http://127.0.0.1:5001.
 •	Documentation API : http://127.0.0.1:5001/docs.
 
-###4.	Configuration et lancement du site de gestion des logements
+### 4.	Configuration et lancement du site de gestion des logements
 Une fois la base de données correctement initialisée, voici comment configurer et démarrer le site.
 
-•	Vérification
+  ** •	Vérification **
 Comme la base de données déjà fonctionnelle et présente dans le git pas besoin.
 
-•	Lancement du serveur 
+  •	Lancement du serveur 
 Toujours en étant dans l’environnement virtuelle activé, il faut exécuter la commande :
 uvicorn python/app:app --reload --port 5000
 Le fichier app.py est situé dans le dossier python. Assurez-vous de lancer cette commande depuis le dossier racine du projet.
 
-•	Accès au site Web
+  •	Accès au site Web
 Une fois le serveur démarré :
 Accédez à l'application via votre navigateur en visitant l'URL suivante :
 http://127.0.0.1:5000
 
-•	Navigation sur le site
+  •	Navigation sur le site
 Depuis la page d'accueil :
 Sélectionnez un logement : Vous pouvez choisir un logement spécifique pour consulter ses informations (2 logements disponibles mais pour l’instant seul le logement 1 est vraiment fonctionnelle Logement ARI).
 
