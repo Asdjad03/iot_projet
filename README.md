@@ -97,8 +97,15 @@ Capteurs : Gère-les capteurs/actionneurs installés dans les différentes pièc
 Configurations : Accède aux paramètres et réglages spécifiques au logement.
 
 
+** - Aides sur internet **
+Voici mon chat avec gpt utilisé pour mon travail
+https://chatgpt.com/share/6782a777-8f8c-8007-a362-d8347b5c0026
+Je me suis aussi aidée de site inetrnet avec des codes partagés ainsi que des videos  :
+https://blog.codepen.io/documentation/prefill/
+https://github.com/ymoslem/FastAPI-JavaScript
+https://dev.to/jagroop2001/building-a-simple-blog-app-using-fastapi-html-css-and-json-1dc
 
-
+https://www.youtube.com/watch?v=yLIt4BYE2AU
 
 
 
